@@ -1,10 +1,18 @@
 import { Router } from "express";
 import { getRepository } from "typeorm";
 import { Product } from "../entity/Product";
+import { Log } from "../entity/Log";
 
 export const productRouter = Router();
 
-// Add New Product
+// Add Log Helper Function
+const addLog = async (action: string, productId: number, details: string) => {
+  const logRepository = getRepository(Log);
+  const log = logRepository.create({ action, productId, details });
+  await logRepository.save(log);
+};
+
+// Add New Product (with logging)
 productRouter.post("/", async (req, res) => {
   const { name, quantity, category } = req.body;
 
@@ -18,13 +26,17 @@ productRouter.post("/", async (req, res) => {
   try {
     const product = productRepository.create({ name, quantity, category });
     await productRepository.save(product);
+
+    // Log event
+    await addLog("Product Added", product.id, `Added product: ${name}`);
+
     res.status(201).json(product);
   } catch (error) {
     res.status(500).json({ message: "Error adding product", error });
   }
 });
 
-// Update Product Quantity
+// Update Product Quantity (with logging)
 productRouter.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { quantity } = req.body;
@@ -43,10 +55,13 @@ productRouter.put("/:id", async (req, res) => {
   product.quantity = quantity;
   await productRepository.save(product);
 
+  // Log event
+  await addLog("Product Updated", product.id, `Updated quantity to: ${quantity}`);
+
   res.json(product);
 });
 
-// Delete Product
+// Delete Product (with logging)
 productRouter.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -62,6 +77,10 @@ productRouter.delete("/:id", async (req, res) => {
   }
 
   await productRepository.remove(product);
+
+  // Log event
+  await addLog("Product Deleted", product.id, `Deleted product: ${product.name}`);
+
   res.json({ message: "Product deleted" });
 });
 
