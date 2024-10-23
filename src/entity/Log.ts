@@ -1,19 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Log {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  action: string;
+    @Column()
+    action: string;
 
-  @Column()
-  productId: number;
+    @Column()
+    productId: number;
 
-  @Column()
-  details: string;
-
-  @CreateDateColumn()
-  timestamp: Date;
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    timestamp: Date;
 }

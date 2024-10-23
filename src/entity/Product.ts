@@ -1,21 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, Unique } from "typeorm";
-import { IsNotEmpty, Min } from "class-validator";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
-@Unique(["name"])
 export class Product {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  @IsNotEmpty()
-  name: string;
+    @Column({ unique: true })
+    name: string;
 
-  @Column()
-  @Min(0)
-  quantity: number;
+    @Column()
+    quantity: number;
 
-  @Column()
-  @IsNotEmpty()
-  category: string;
+    @Column()
+    category: string;
 }

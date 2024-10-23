@@ -1,17 +1,20 @@
-import "reflect-metadata";
-import express from "express";
-import { createConnection } from "typeorm";
-import { Product } from "./entity/Product";
-import { productRouter } from "./routes/productRoutes";
+import express from 'express';
+import productRoutes from './routes/productRoutes';
+import { errorHandler } from './middleware/errorHandler';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
 
-createConnection().then(async () => {
-  const app = express();
+const app = express();
 
-  app.use(express.json());
-  app.use("/api/products", productRouter);
+// Serve Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}).catch(error => console.log(error));
+app.use(express.json());
+
+// Routes
+app.use('/api', productRoutes);
+
+// Error handling middleware
+app.use(errorHandler);
+
+export default app;
