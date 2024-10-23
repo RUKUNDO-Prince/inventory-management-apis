@@ -84,12 +84,12 @@ productRouter.delete("/:id", async (req, res) => {
   res.json({ message: "Product deleted" });
 });
 
-// Retrieve Product List with Filters
+// Retrieve Product List with Pagination and Filters
 productRouter.get("/", async (req, res) => {
-  const { category, minQuantity, maxQuantity } = req.query;
+  const { category, minQuantity, maxQuantity, page = 1, limit = 10 } = req.query;
 
   const productRepository = getRepository(Product);
-  
+
   // Build query based on filters
   let query = productRepository.createQueryBuilder("product");
 
@@ -103,14 +103,23 @@ productRouter.get("/", async (req, res) => {
     query = query.andWhere("product.quantity <= :maxQuantity", { maxQuantity: Number(maxQuantity) });
   }
 
+  // Pagination
+  const take = Number(limit);
+  const skip = (Number(page) - 1) * take;
+
   try {
-    const products = await query.getMany();
-    res.json(products);
+    const [products, total] = await query.skip(skip).take(take).getManyAndCount();
+
+    res.json({
+      products,
+      total,
+      page: Number(page),
+      pages: Math.ceil(total / take)
+    });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving products", error });
   }
 });
-
 
 // Retrieve Single Product
 productRouter.get("/:id", async (req, res) => {
