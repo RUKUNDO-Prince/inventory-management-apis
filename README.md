@@ -109,5 +109,4 @@ Before running the project, ensure you have:
 - **Other**: dotenv for environment configuration
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-```
+This project is licensed under the MIT License.
