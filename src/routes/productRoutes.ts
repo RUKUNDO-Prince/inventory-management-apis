@@ -65,13 +65,35 @@ productRouter.delete("/:id", async (req, res) => {
   res.json({ message: "Product deleted" });
 });
 
-// Retrieve Product List and Single Product
+// Retrieve Product List with Filters
 productRouter.get("/", async (req, res) => {
+  const { category, minQuantity, maxQuantity } = req.query;
+
   const productRepository = getRepository(Product);
-  const products = await productRepository.find();
-  res.json(products);
+  
+  // Build query based on filters
+  let query = productRepository.createQueryBuilder("product");
+
+  if (category) {
+    query = query.andWhere("product.category = :category", { category });
+  }
+  if (minQuantity) {
+    query = query.andWhere("product.quantity >= :minQuantity", { minQuantity: Number(minQuantity) });
+  }
+  if (maxQuantity) {
+    query = query.andWhere("product.quantity <= :maxQuantity", { maxQuantity: Number(maxQuantity) });
+  }
+
+  try {
+    const products = await query.getMany();
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving products", error });
+  }
 });
 
+
+// Retrieve Single Product
 productRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
 
