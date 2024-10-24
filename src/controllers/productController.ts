@@ -4,7 +4,7 @@ import { Product } from '../entity/Product';
 import { Log } from '../entity/Log';
 
 // Add new product
-export const addProduct = async (req: Request, res: Response) => {
+export const addProduct = async (req: Request, res: Response): Promise<Response> => {
     const { name, quantity, category } = req.body;
 
     try {
@@ -20,14 +20,14 @@ export const addProduct = async (req: Request, res: Response) => {
 
         await logAction('ADD', newProduct.id);
 
-        res.status(201).json(newProduct);
+        return res.status(201).json(newProduct); // Ensure to return the response
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 };
 
 // Update product quantity
-export const updateProductQuantity = async (req: Request, res: Response) => {
+export const updateProductQuantity = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     const { quantity } = req.body;
 
@@ -48,14 +48,14 @@ export const updateProductQuantity = async (req: Request, res: Response) => {
 
         await logAction('UPDATE', product.id);
 
-        res.status(200).json(product);
+        return res.status(200).json(product); // Ensure to return the response
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 };
 
 // Delete product
-export const deleteProduct = async (req: Request, res: Response) => {
+export const deleteProduct = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
     try {
@@ -74,14 +74,14 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
         await logAction('DELETE', Number(id));
 
-        res.status(204).send();
+        return res.status(204).send(); // Ensure to return the response
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 };
 
 // Get all products (with filtering and pagination)
-export const getProducts = async (req: Request, res: Response) => {
+export const getProducts = async (req: Request, res: Response): Promise<Response> => {
     const { category, minQuantity, maxQuantity, page = 1, limit = 10 } = req.query;
 
     try {
@@ -103,21 +103,21 @@ export const getProducts = async (req: Request, res: Response) => {
         const [products, total] = await query
             .skip((Number(page) - 1) * Number(limit))
             .take(Number(limit))
-            .getManyAndCount();
+            .getManyAndCount ();
 
-        res.status(200).json({
+        return res.status(200).json({
             products,
             total,
             page: Number(page),
             limit: Number(limit),
-        });
+        }); // Ensure to return the response
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 };
 
 // Get product by ID
-export const getProductById = async (req: Request, res: Response) => {
+export const getProductById = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
     try {
@@ -128,9 +128,9 @@ export const getProductById = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'Product not found' });
         }
 
-        res.status(200).json(product);
+        return res.status(200).json(product); // Ensure to return the response
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 };
 

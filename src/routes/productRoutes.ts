@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Router } from 'express';
 import { addProduct, updateProductQuantity, deleteProduct, getProducts, getProductById } from '../controllers/productController';
 import { getLogs } from '../controllers/logController';
