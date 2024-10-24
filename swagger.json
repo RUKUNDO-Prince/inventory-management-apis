@@ -1,205 +1,208 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "description": "Inventory Management API with TypeScript and PostgreSQL",
-      "version": "1.0.0",
-      "title": "Inventory Management API"
-    },
-    "host": "localhost:3000",
-    "basePath": "/api",
-    "schemes": ["http"],
-    "paths": {
-      "/products": {
-        "get": {
-          "summary": "Get all products",
-          "parameters": [
-            {
-              "name": "category",
-              "in": "query",
-              "type": "string",
-              "description": "Filter by category"
-            },
-            {
-              "name": "minQuantity",
-              "in": "query",
-              "type": "integer",
-              "description": "Filter by minimum quantity"
-            },
-            {
-              "name": "maxQuantity",
-              "in": "query",
-              "type": "integer",
-              "description": "Filter by maximum quantity"
-            },
-            {
-              "name": "page",
-              "in": "query",
-              "type": "integer",
-              "description": "Page number for pagination"
-            },
-            {
-              "name": "limit",
-              "in": "query",
-              "type": "integer",
-              "description": "Page size for pagination"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "OK"
-            },
-            "500": {
-              "description": "Server error"
-            }
+  "swagger": "2.0",
+  "info": {
+    "description": "Inventory Management API with TypeScript and PostgreSQL",
+    "version": "1.0.0",
+    "title": "Inventory Management API"
+  },
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "schemes": ["http"],
+  "paths": {
+    "/products": {
+      "get": {
+        "summary": "Retrieve all products",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "type": "string",
+            "description": "Filter products by category"
+          },
+          {
+            "name": "minQuantity",
+            "in": "query",
+            "type": "integer",
+            "description": "Filter products with a minimum quantity"
+          },
+          {
+            "name": "maxQuantity",
+            "in": "query",
+            "type": "integer",
+            "description": "Filter products with a maximum quantity"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "description": "Page number for pagination"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "description": "Number of products per page"
           }
-        },
-        "post": {
-          "summary": "Add a new product",
-          "parameters": [
-            {
-              "name": "body",
-              "in": "body",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/Product"
-              }
-            }
-          ],
-          "responses": {
-            "201": {
-              "description": "Created"
-            },
-            "400": {
-              "description": "Bad request"
-            },
-            "500": {
-              "description": "Server error"
-            }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of products"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       },
-      "/products/{id}": {
-        "get": {
-          "summary": "Get product by ID",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "type": "integer",
-              "description": "Product ID"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "OK"
-            },
-            "404": {
-              "description": "Product not found"
-            },
-            "500": {
-              "description": "Server error"
+      "post": {
+        "summary": "Add a new product",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Product"
             }
           }
-        },
-        "put": {
-          "summary": "Update product quantity",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "type": "integer",
-              "description": "Product ID"
-            },
-            {
-              "name": "body",
-              "in": "body",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/UpdateQuantity"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Updated"
-            },
-            "400": {
-              "description": "Bad request"
-            },
-            "404": {
-              "description": "Product not found"
-            },
-            "500": {
-              "description": "Server error"
-            }
-          }
-        },
-        "delete": {
-          "summary": "Delete product",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "type": "integer",
-              "description": "Product ID"
-            }
-          ],
-          "responses": {
-            "204": {
-              "description": "Deleted"
-            },
-            "400": {
-              "description": "Bad request"
-            },
-            "404": {
-              "description": "Product not found"
-            },
-            "500": {
-              "description": "Server error"
-            }
-          }
-        }
-      },
-      "/logs": {
-        "get": {
-          "summary": "Get all logs",
-          "responses": {
-            "200": {
-              "description": "OK"
-            },
-            "500": {
-              "description": "Server error"
-            }
+        ],
+        "responses": {
+          "201": {
+            "description": "Product successfully created"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
     },
-    "definitions": {
-      "Product": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
+    "/products/{id}": {
+      "get": {
+        "summary": "Retrieve a product by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID of the product"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of the product"
           },
-          "quantity": {
-            "type": "integer"
+          "404": {
+            "description": "Product not found"
           },
-          "category": {
-            "type": "string"
+          "500": {
+            "description": "Server error"
           }
         }
       },
-      "UpdateQuantity": {
-        "type": "object",
-        "properties": {
-          "quantity": {
-            "type": "integer"
+      "put": {
+        "summary": "Update the quantity of a product",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID of the product"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateQuantity"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product quantity updated"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Product not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a product",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID of the product"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Product successfully deleted"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Product not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/logs": {
+      "get": {
+        "summary": "Retrieve all logs",
+        "responses": {
+          "200": {
+            "description": "Logs successfully retrieved"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
     }
+  },
+  "definitions": {
+    "Product": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the product"
+        },
+        "quantity": {
+          "type": "integer",
+          "description": "The quantity of the product"
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the product"
+        }
+      }
+    },
+    "UpdateQuantity": {
+      "type": "object",
+      "properties": {
+        "quantity": {
+          "type": "integer",
+          "description": "The new quantity of the product"
+        }
+      }
+    }
   }
-  
+}
