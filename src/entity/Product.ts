@@ -3,30 +3,47 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 @Entity()
 export class Product {
     @PrimaryGeneratedColumn()
-    id!: number;
+    private _id: number;
 
     @Column({ unique: true })
-    name!: string;
+    private _name: string;
 
     @Column()
-    quantity!: number;
+    private _quantity: number;
 
     @Column()
-    category!: string;
+    private _category: string;
 
-    constructor(name: string, quantity: number, category: string) {
-        if (!name || name.trim() === '') {
-            throw new Error('Name cannot be empty');
-        }
-        if (quantity < 0) {
-            throw new Error('Quantity cannot be negative');
-        }
-        if (!category || category.trim() === '') {
-            throw new Error('Category cannot be empty');
-        }
+    // Getters and Setters
+    get id(): number {
+        return this._id;
+    }
 
-        this.name = name.trim();
-        this.quantity = quantity;
-        this.category = category.trim();
+    set id(value: number) {
+        this._id = value;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    set name(value: string) {
+        this._name = value;
+    }
+
+    get quantity(): number {
+        return this._quantity;
+    }
+
+    set quantity(value: number) {
+        this._quantity = value;
+    }
+
+    get category(): string {
+        return this._category;
+    }
+
+    set category(value: string) {
+        this._category = value;
     }
 }
