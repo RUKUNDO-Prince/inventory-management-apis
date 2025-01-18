@@ -24,12 +24,12 @@ Before running the project, ensure you have:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/inventory-management-api.git
+   git clone https://github.com/RUKUNDO-Prince/inventory-management-apis.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd inventory-management-api
+   cd inventory-management-apis
    ```
 
 3. Install dependencies:
